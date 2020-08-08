@@ -11,4 +11,4 @@ function TeacherFrom() {
     )
 }
 
-export default TeacherFrom;
+export default TeacherFrom; 
