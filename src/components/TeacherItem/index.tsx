@@ -1,34 +1,50 @@
 import React from 'react';
 
-import wppIcon from '../../assets/images/icons/whatsapp.svg'; 
+import wppIcon from '../../assets/images/icons/whatsapp.svg';
 
 import './styles.css';
+import api from '../../Services/api';
 
-function TeacherItem() {
+export interface Teacher {
+    id: number;
+    avatar: string;
+    bio: string;
+    cost: number;
+    name: string;
+    subject: string;
+    whatsapp: string;
+};
+
+interface TeacherItemProps {
+    teacher: Teacher;
+}
+
+const TeacherItem:React.FC<TeacherItemProps> = ({teacher}) => {
+    function criarNovaConexao() {
+        api.post('connections', {
+            user_id: teacher.id
+        });
+    }
+
     return (
         <article className="teacher-item">
             <header>
-                <img src="https://www.crmv.am.gov.br/wp-content/uploads/2017/10/coelho-filhote.png" alt="Coelho"/>
+                <img src={teacher.avatar} alt={teacher.name} />
                 <div>
-                    <strong>Coelho</strong>
-                    <span>Química</span>
+                    <strong>{teacher.name}</strong>
+                    <span>{teacher.subject}</span>
                 </div>
             </header>
-            <p>
-            Entusiasta das melhores tecnologias de química avançada.
-            <br/>
-            <br/>
-            Apaixonado por explodir coisas em laboratório e por mudar a vida das pessoas através de experiências. Mais de 200.000 pessoas já passaram por uma das minhas explosões.
-            </p>
+            <p>{teacher.bio}</p>
             <footer>
                 <p>
                     Preço/Hora
-                    <strong>R$ 80,00</strong>
+                    <strong>R$ {teacher.cost}</strong>
                 </p>
-                <button type="button">
+                <a target="_blank" rel="noopener noreferrer" onClick={criarNovaConexao} href={`https://wa.me/${teacher.whatsapp}`}>
                     <img src={wppIcon} alt="Wpp"/>
                     Entrar em contato
-                </button>
+                </a>
             </footer>
         </article>
     )
